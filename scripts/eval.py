@@ -49,8 +49,8 @@ def run_instance(
             proc = subprocess.Popen(
                 command,
                 preexec_fn=os.setsid,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
             rv = proc.wait()
             runtime_s = time.perf_counter() - start_time
