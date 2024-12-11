@@ -127,6 +127,7 @@ def main(*, config_path: Path, dry_run: bool) -> None:
             {
                 **result.config,
                 "completed_tasks": result.completed_tasks,
+                "return_code": result.return_code,
                 "runtime_s": result.runtime_s,
             }
             for result in results
