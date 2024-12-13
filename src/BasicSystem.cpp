@@ -493,8 +493,8 @@ void BasicSystem::save_results()
         for (auto task : finished_tasks[k])
         {
             output << task.first << "," << task.second << ",";
-            if (task.second != 0 && solver.get_name() != "LaCAM")
-                output << G.get_heuristic(task.first)[prev];
+            //if (task.second != 0)
+            //    output << G.get_heuristic(task.first)[prev];
             output << ";";
             prev = task.first;
         }
