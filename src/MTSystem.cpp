@@ -103,7 +103,7 @@ void MTSystem::simulate(int simulation_time)
     this->simulation_time = simulation_time;
     initialize();
 
-    for(; timestep < simulation_time; timestep += simulation_window)
+	while(timestep < simulation_time)
     {
         std::cout << "Timestep " << timestep << std::endl;
 
@@ -130,6 +130,13 @@ void MTSystem::simulate(int simulation_time)
 		{
 			cout << "***** Too many traffic jams ***" << endl;
 			break;
+		}
+
+		if (solver.get_name() == "LaCAMSequential") {
+			const int makespan = solver.solution.front().size();
+			timestep += std::min(makespan, simulation_window);
+		} else {
+			timestep += simulation_window;
 		}
     }
 
