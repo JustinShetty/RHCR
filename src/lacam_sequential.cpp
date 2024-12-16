@@ -27,22 +27,26 @@ bool LaCAMSequential::run(const vector<State>& starts,
         start_indexes.push_back(start.location);
     }
 
-    std::vector<int> goal_indexes;
+    std::vector<int> goal_indexes_pickup;
     for (const auto& goal_sequence : goal_locations)
     {
         const auto goal = goal_sequence[0];
-        goal_indexes.push_back(goal.first);
+        goal_indexes_pickup.push_back(goal.first);
     }
 
-    auto ins = lacam::Instance(G.map_name + ".map", start_indexes, goal_indexes);
+    std::vector<int> goal_indexes_delivery;
+    for (const auto& goal_sequence : goal_locations)
+    {
+        const auto goal = goal_sequence[1];
+        goal_indexes_delivery.push_back(goal.first);
+    }
+
+    auto ins = lacam::Instance(G.map_name + ".map", start_indexes, goal_indexes_pickup);
     assert(ins.is_valid(1));
     const auto verbosity = 10;
-    const auto total_goals = ins.get_total_goals();
-    const auto threshold = std::max(((int)total_goals * 9) / 10, 1);
-    std::cout << "threshold: " << threshold << " (total_goals: " << total_goals << ")" << std::endl;
+    const std::optional<int> threshold = std::nullopt; 
     auto deadline = lacam::Deadline(5 * 60 * 1000);  // 5min
     auto lacam_soln = lacam::solve(ins, threshold, verbosity, &deadline, 0);
-    runtime = (std::clock() - start) * 1.0  / CLOCKS_PER_SEC;
     if (!lacam::is_feasible_solution(ins, lacam_soln, threshold, verbosity)) {
         solution_cost = -1;
         solution_found = false;
@@ -58,6 +62,26 @@ bool LaCAMSequential::run(const vector<State>& starts,
             solution[i].push_back(State(loc->index));
         }
     }
+
+    auto ins2 = lacam::Instance(G.map_name + ".map", goal_indexes_pickup, goal_indexes_delivery);
+    assert(ins2.is_valid(1));
+    auto deadline2 = lacam::Deadline(5 * 60 * 1000);  // 5min
+    lacam_soln = lacam::solve(ins2, threshold, verbosity, &deadline2, 0);
+    runtime = (std::clock() - start) * 1.0  / CLOCKS_PER_SEC;
+    if (!lacam::is_feasible_solution(ins2, lacam_soln, threshold, verbosity)) {
+        solution_cost = -1;
+        solution_found = false;
+        return false;
+    }
+    for (size_t t = 0; t < lacam_soln.size(); t++)
+    {
+        for (size_t i = 0; i < N; i++)
+        {
+            auto loc = lacam_soln[t][i];
+            solution[i].push_back(State(loc->index));
+        }
+    }
+
     solution_found = true;
     return true;
 }

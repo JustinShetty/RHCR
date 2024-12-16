@@ -40,9 +40,7 @@ bool LaCAM::run(const vector<State>& starts,
     auto ins = lacam::Instance(G.map_name + ".map", start_indexes, goal_index_sequences);
     assert(ins.is_valid(1));
     const auto verbosity = 10;
-    const auto total_goals = ins.get_total_goals();
-    const auto threshold = std::max(((int)total_goals * 9) / 10, 1);
-    std::cout << "threshold: " << threshold << " (total_goals: " << total_goals << ")" << std::endl;
+    const std::optional<int> threshold = ins.get_total_goals();
     auto deadline = lacam::Deadline(5 * 60 * 1000);  // 5min
     auto lacam_soln = lacam::solve(ins, threshold, verbosity, &deadline, 0);
     runtime = (std::clock() - start) * 1.0  / CLOCKS_PER_SEC;
