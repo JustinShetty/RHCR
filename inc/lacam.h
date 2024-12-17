@@ -5,7 +5,7 @@ class LaCAM:
     public MAPFSolver
 {
 public:
-    LaCAM(BasicGraph& G, SingleAgentSolver& path_planner);
+    LaCAM(BasicGraph& G, SingleAgentSolver& path_planner, bool allow_following = false);
     ~LaCAM();
 
     // Runs the algorithm until the problem is solved or time is exhausted

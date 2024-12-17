@@ -79,11 +79,15 @@ MAPFSolver* set_solver(BasicGraph& G, const boost::program_options::variables_ma
 	{
 		mapf_solver = new LRAStar(G, *path_planner);
 	}
-	else if (solver_name == "LaCAM")
+	else if (solver_name == "pLaCAM")
 	{
 		mapf_solver = new LaCAM(G, *path_planner);
 	}
-	else if (solver_name == "LaCAMSequential")
+	else if (solver_name == "LaCAM_multi_goal")
+	{
+		mapf_solver = new LaCAM(G, *path_planner, true);
+	}
+	else if (solver_name == "LaCAM_sequential")
 	{
 		mapf_solver = new LaCAMSequential(G, *path_planner);
 	}

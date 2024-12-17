@@ -2,16 +2,22 @@
 #include <lacam.hpp>
 #include <algorithm>
 
-LaCAM::LaCAM(BasicGraph& G, SingleAgentSolver& path_planner) : MAPFSolver(G, path_planner) {
+LaCAM::LaCAM(BasicGraph& G, SingleAgentSolver& path_planner, bool allow_following) : MAPFSolver(G, path_planner) {
+    // flags to match original LaCAM behavior
     lacam::Planner::FLG_STAR = false;
+    lacam::Planner::FLG_MULTI_THREAD = false;
     lacam::Planner::PIBT_NUM = 1;
-    // lacam::Planner::FLG_MULTI_THREAD = false;
     lacam::Planner::FLG_REFINER = false;
+    lacam::Planner::REFINER_NUM = 1;
     lacam::Planner::FLG_SCATTER = false;
-    // lacam::Planner::RANDOM_INSERT_PROB1 = 0.0;
-    // lacam::Planner::RANDOM_INSERT_PROB2 = 0.0;
-    // lacam::Planner::FLG_RANDOM_INSERT_INIT_NODE = false;
-    lacam::Planner::FLG_ALLOW_FOLLOWING = false;
+    // scatter margin not relevant if false
+    lacam::Planner::RANDOM_INSERT_PROB1 = 0.0;
+    lacam::Planner::RANDOM_INSERT_PROB2 = 0.0;
+    lacam::Planner::FLG_RANDOM_INSERT_INIT_NODE = false;
+    lacam::Planner::RECURSIVE_RATE = 0;
+    lacam::Planner::RECURSIVE_TIME_LIMIT = 0;
+
+    lacam::Planner::FLG_ALLOW_FOLLOWING = allow_following;
 }
 
 bool LaCAM::run(const vector<State>& starts,
