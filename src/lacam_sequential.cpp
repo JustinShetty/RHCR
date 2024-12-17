@@ -11,7 +11,7 @@ LaCAMSequential::LaCAMSequential(BasicGraph& G, SingleAgentSolver& path_planner)
     // lacam::Planner::RANDOM_INSERT_PROB1 = 0.0;
     // lacam::Planner::RANDOM_INSERT_PROB2 = 0.0;
     // lacam::Planner::FLG_RANDOM_INSERT_INIT_NODE = false;
-    lacam::Planner::FLG_ALLOW_FOLLOWING = false;
+    lacam::Planner::FLG_ALLOW_FOLLOWING = true;
 }
 
 bool LaCAMSequential::run(const vector<State>& starts,
@@ -21,10 +21,10 @@ bool LaCAMSequential::run(const vector<State>& starts,
     clock_t start = std::clock();
 
     const auto N = starts.size();
-    std::vector<int> start_indexes;
+    std::vector<int> start_indexes_pickup;
     for (const auto& start : starts)
     {
-        start_indexes.push_back(start.location);
+        start_indexes_pickup.push_back(start.location);
     }
 
     std::vector<int> goal_indexes_pickup;
@@ -41,10 +41,10 @@ bool LaCAMSequential::run(const vector<State>& starts,
         goal_indexes_delivery.push_back(goal.first);
     }
 
-    auto ins = lacam::Instance(G.map_name + ".map", start_indexes, goal_indexes_pickup);
+    auto ins = lacam::Instance(G.map_name + ".map", start_indexes_pickup, goal_indexes_pickup);
     assert(ins.is_valid(1));
     const auto verbosity = 10;
-    const std::optional<int> threshold = std::nullopt; 
+    const std::optional<int> threshold = ins.get_total_goals(); 
     auto deadline = lacam::Deadline(5 * 60 * 1000);  // 5min
     auto lacam_soln = lacam::solve(ins, threshold, verbosity, &deadline, 0);
     if (!lacam::is_feasible_solution(ins, lacam_soln, threshold, verbosity)) {
@@ -63,7 +63,13 @@ bool LaCAMSequential::run(const vector<State>& starts,
         }
     }
 
-    auto ins2 = lacam::Instance(G.map_name + ".map", goal_indexes_pickup, goal_indexes_delivery);
+
+    std::vector<int> start_indexes_delivery;
+    for (const auto& path : solution)
+    {
+        start_indexes_delivery.push_back(path.back().location);
+    }
+    auto ins2 = lacam::Instance(G.map_name + ".map", start_indexes_delivery, goal_indexes_delivery);
     assert(ins2.is_valid(1));
     auto deadline2 = lacam::Deadline(5 * 60 * 1000);  // 5min
     lacam_soln = lacam::solve(ins2, threshold, verbosity, &deadline2, 0);
