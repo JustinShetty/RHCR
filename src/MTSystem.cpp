@@ -132,7 +132,7 @@ void MTSystem::simulate(int simulation_time)
 			break;
 		}
 
-		if (solver.get_name() == "LaCAMSequential") {
+		if (solver.get_name() == "LaCAM_sequential") {
 			const int makespan = solver.solution.front().size();
 			timestep += std::min(makespan, simulation_window);
 		} else {

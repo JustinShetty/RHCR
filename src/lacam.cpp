@@ -2,7 +2,7 @@
 #include <lacam.hpp>
 #include <algorithm>
 
-LaCAM::LaCAM(BasicGraph& G, SingleAgentSolver& path_planner, bool allow_following) : MAPFSolver(G, path_planner) {
+LaCAM::LaCAM(BasicGraph& G, SingleAgentSolver& path_planner, bool allow_following) : MAPFSolver(G, path_planner), allow_following(allow_following) {
     // flags to match original LaCAM behavior
     lacam::Planner::FLG_STAR = false;
     lacam::Planner::FLG_MULTI_THREAD = false;

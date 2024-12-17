@@ -332,7 +332,7 @@ list<tuple<int, int, int>> BasicSystem::move()
 {
     int start_timestep = timestep;
     int end_timestep = timestep + simulation_window;
-    if (solver.get_name() == "LaCAMSequential") {
+    if (solver.get_name() == "LaCAM_sequential") {
         end_timestep = timestep + std::min((int)solver.solution.front().size(), simulation_window);
     }
 
@@ -616,12 +616,7 @@ void BasicSystem::solve()
 			update_paths(lra.solution);
 		}
 	}
-    else if (solver.get_name() == "LaCAM")
-    {
-        assert(solver.run(starts, goal_locations, time_limit));
-        update_paths(solver.solution);
-    }
-    else if (solver.get_name() == "LaCAMSequential")
+    else if (solver.get_name().find("LaCAM") != std::string::npos)
     {
         assert(solver.run(starts, goal_locations, time_limit));
         update_paths(solver.solution);

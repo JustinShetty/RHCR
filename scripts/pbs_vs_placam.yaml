@@ -1,5 +1,5 @@
-root: ../data/exp/RHCR/exp_sequential/
-max_workers: 10
+root: ../data/exp/RHCR/pbs_vs_placam/
+max_workers: 20
 time_limit_sec: 7200 # 2 hours
 
 n_seeds: 10
@@ -15,7 +15,7 @@ simulation_windows:
   - 500
   - 1000
 solvers:
-  LaCAM:
+  PBS:
     num_agents:
       - 1
       - 10
@@ -24,12 +24,7 @@ solvers:
       - 300
       - 400
       - 500
-      - 1000
-      - 2000
-      - 3000
-      - 4000
-      - 5000
-  LaCAMSequential:
+  pLaCAM:
     num_agents:
       - 1
       - 10

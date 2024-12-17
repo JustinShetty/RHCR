@@ -13,12 +13,14 @@ public:
              const vector< vector<pair<int, int> > >& goal_locations,
              int time_limit);
 
-    string get_name() const {return "LaCAM"; }
+    string get_name() const {
+        return allow_following ? "LaCAM_multi_goal" : "pLaCAM"; 
+    }
 
     void save_results(const std::string &fileName, const std::string &instanceName) const;
 	void save_search_tree(const std::string &fileName) const {}
 	void save_constraints_in_goal_node(const std::string &fileName) const {}
 	void clear();
 private:
-
+    bool allow_following;
 };

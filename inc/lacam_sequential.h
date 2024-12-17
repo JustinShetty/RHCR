@@ -13,7 +13,7 @@ public:
              const vector< vector<pair<int, int> > >& goal_locations,
              int time_limit);
 
-    string get_name() const {return "LaCAMSequential"; }
+    string get_name() const {return "LaCAM_sequential"; }
 
     void save_results(const std::string &fileName, const std::string &instanceName) const;
 	void save_search_tree(const std::string &fileName) const {}
