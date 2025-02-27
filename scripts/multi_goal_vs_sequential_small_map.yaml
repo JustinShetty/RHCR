@@ -1,0 +1,45 @@
+root: ../data/exp/RHCR/multi_goal_vs_sequential/
+max_workers: 10
+time_limit_sec: 7200 # 2 hours
+
+n_seeds: 10
+simulation_time: 5000
+
+maps:
+  - warehouse-20-40-10-2-1.map
+  - warehouse-20-40-10-2-2.map
+simulation_windows:
+  - 10
+  - 100
+  - 200
+  - 500
+  - 1000
+solvers:
+  LaCAM_multi_goal:
+    num_agents:
+      - 1
+      - 10
+      - 100
+      - 200
+      - 300
+      - 400
+      - 500
+      - 1000
+      - 2000
+      - 3000
+      - 4000
+      - 5000
+  LaCAM_sequential:
+    num_agents:
+      - 1
+      - 10
+      - 100
+      - 200
+      - 300
+      - 400
+      - 500
+      - 1000
+      - 2000
+      - 3000
+      - 4000
+      - 5000
