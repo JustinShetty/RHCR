@@ -1,4 +1,4 @@
-root: ../data/exp/RHCR/multi_goal_vs_sequential/
+root: ../data/exp/RHCR/multi_goal_vs_sequential_small/
 max_workers: 10
 time_limit_sec: 7200 # 2 hours
 
