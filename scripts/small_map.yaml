@@ -15,6 +15,15 @@ simulation_windows:
   - 500
   - 1000
 solvers:
+  PBS:
+    num_agents:
+      - 1
+      - 10
+      - 100
+      - 200
+      - 300
+      - 400
+      - 500
   LaCAM_multi_goal:
     num_agents:
       - 1
